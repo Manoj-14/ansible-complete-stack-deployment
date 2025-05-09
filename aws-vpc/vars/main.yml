@@ -3,11 +3,6 @@
 # vars file for aws-vpc
 vpc_name: 'vprofile-vpc'
 vpcCidr: '172.20.0.0/16'
-region: 'us-east-2'
-zones:
-  zone1: 'us-east-2a'
-  zone2: 'us-east-2b'
-  zone3: 'us-east-2c'
 
 public_subs:
   - name: pub-sub1
@@ -36,11 +31,3 @@ private_subs:
     cidr: 172.20.6.0/24
     out: privsub3_out
     zone: zone3
-
-
-
-
-
-ami_id: "ami-058a8a5ab36292159"
-MYIP: "122.172.81.192/32"
-state: "present"

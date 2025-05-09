@@ -5,5 +5,5 @@
   gather_facts: False
   roles:
     - aws-vpc
-        
+    - aws-bastion-host  
 
