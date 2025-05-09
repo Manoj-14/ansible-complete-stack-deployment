@@ -18,3 +18,4 @@ zone3: 'us-east-2c'
 
 ami_id: "ami-058a8a5ab36292159"
 MYIP: "122.172.81.192/32"
+state: "present"
