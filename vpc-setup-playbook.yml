@@ -1,6 +1,6 @@
 
 - name: VPC Setup
-- hosts: localhost
+  hosts: localhost
   connection: local
   gather_facts: False
   roles:
