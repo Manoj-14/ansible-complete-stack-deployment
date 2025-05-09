@@ -3,18 +3,43 @@
 # vars file for aws-vpc
 vpc_name: 'vprofile-vpc'
 vpcCidr: '172.20.0.0/16'
-
-PubSub1Cidr: '172.20.1.0'
-PubSub2Cidr: '172.20.2.0'
-PubSub3Cidr: '172.20.3.0'
-PrivSub1Cidr: '172.20.4.0'
-PrivSub2Cidr: '172.20.5.0'
-PrivSub3Cidr: '172.20.6.0'
-
 region: 'us-east-2'
-zone1: 'us-east-2a'
-zone2: 'us-east-2b'
-zone3: 'us-east-2c'
+zones:
+  zone1: 'us-east-2a'
+  zone2: 'us-east-2b'
+  zone3: 'us-east-2c'
+
+public_subs:
+  - name: pub-sub1
+    cidr: 172.20.1.0/24
+    out: pubsub1_out
+    zone: zone1
+  - name: pub-sub2
+    cidr: 172.20.2.0/24
+    out: pubsub2_out
+    zone: zone2
+  - name: pub-sub3
+    cidr: 172.20.3.0/24
+    out: pubsub3_out
+    zone: zone3
+
+private_subs:
+  - name: priv-sub1
+    cidr: 172.20.4.0/24
+    out: privsub1_out
+    zone: zone1
+  - name: priv-sub2
+    cidr: 172.20.5.0/24
+    out: privsub2_out
+    zone: zone2
+  - name: priv-sub3
+    cidr: 172.20.6.0/24
+    out: privsub3_out
+    zone: zone3
+
+
+
+
 
 ami_id: "ami-058a8a5ab36292159"
 MYIP: "122.172.81.192/32"
