@@ -1,0 +1,9 @@
+
+- name: VPC Setup
+- hosts: localhost
+  connection: local
+  gather_facts: False
+  roles:
+    - aws-vpc
+        
+

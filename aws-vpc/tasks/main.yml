@@ -1,0 +1,14 @@
+#SPDX-License-Identifier: MIT-0
+---
+# tasks file for aws-vpc
+- name: Create vprofile vpc
+  amazon.aws.ec2_vpc_net:
+    name: "{{vpc_name}}"
+    cidr_block: "{{vpcCidr}}"
+    region: "{{region}}"
+    dns_supprt: yes
+    dns_hostnames: yes
+    tenancy: default
+    state: "{{state}}"
+  register: vpcout
+  
