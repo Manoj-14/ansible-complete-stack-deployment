@@ -6,4 +6,5 @@
   roles:
     - aws-vpc
     - aws-bastion-host  
+    - ec2-stack
 

@@ -1,0 +1,15 @@
+#SPDX-License-Identifier: MIT-0
+---
+# tasks file for ec2-stack
+- name: Create key-pair for vprofile
+  amazon.aws.ec2_key:
+    name: vprofile-web-key
+    region: "{{region}}"
+  register: key_out
+
+- name: Save the private key 
+  copy:
+    content: "{{key_out.key.private_key}}"
+    dest: "ec2-stack/files/vprofile-web-key.pem"
+    mode: 0600
+  when: key_out.changed
