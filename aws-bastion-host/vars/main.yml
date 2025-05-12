@@ -5,3 +5,4 @@
 ami_id: "ami-058a8a5ab36292159"
 MYIP: "122.172.81.26/32"
 state: "present"
+insatnce_state: "running"
