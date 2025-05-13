@@ -18,6 +18,7 @@
     az: "{{zones[item.zone]}}"
     cidr: "{{item.cidr}}"
     state: "{{state}}"
+    region: "{{region}}"
     map_public: true
     resource_tags: {
       Name: "{{item.name}}"
@@ -31,6 +32,7 @@
     az: "{{zones[item.zone]}}"
     cidr: "{{item.cidr}}"
     state: "{{state}}"
+    region: "{{region}}"
     resource_tags: {
       Name: "{{item.name}}"
     }
@@ -47,6 +49,7 @@
   amazon.aws.ec2_vpc_igw:
     vpc_id: "{{vpcout.vpc.id}}"
     state: "{{state}}"
+    region: "{{region}}"
     resource_tags: {
       Name: "vprofile-IG"
     }
@@ -58,6 +61,7 @@
     tags:
       Name: vpro-public-RT
     subnets: "{{ pub_subnet_ids }}"
+    region: "{{region}}"
     routes:
       - dest: 0.0.0.0/0
         gateway_id: "{{ igw_out.gateway_id }}"
@@ -67,6 +71,7 @@
   amazon.aws.ec2_vpc_nat_gateway:
     state: "{{state}}"
     subnet_id: "{{pub_subnet_ids[0]}}"
+    region: "{{region}}"
     wait: true
     if_exist_do_not_create: true
   register: NATGW_out
@@ -75,6 +80,7 @@
 - name: Set up private subnet route table
   amazon.aws.ec2_vpc_route_table:
     vpc_id: "{{vpcout.vpc.id}}"
+    region: "{{region}}"
     tags:
       Name: vpro-private-RT
     subnets: "{{ priv_subnet_ids }}"
