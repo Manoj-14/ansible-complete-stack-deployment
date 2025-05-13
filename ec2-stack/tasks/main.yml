@@ -70,7 +70,7 @@
     vpc_subnet_id: "{{priv_subnet_ids[0]}}"
     wait: yes
     wait_timeout: 300
-    state: "{{insatnce_state}}"
+    state: "{{instance_state}}"
     tags:
       Project: Vprofile
       Owner: Devops Team
@@ -89,7 +89,7 @@
     vpc_subnet_id: "{{priv_subnet_ids[0]}}"
     wait: yes
     wait_timeout: 300
-    state: "{{insatnce_state}}"
+    state: "{{instance_state}}"
     tags:
       Project: Vprofile
       Owner: Devops Team
@@ -108,7 +108,7 @@
     vpc_subnet_id: "{{priv_subnet_ids[0]}}"
     wait: yes
     wait_timeout: 300
-    state: "{{insatnce_state}}"
+    state: "{{instance_state}}"
     tags:
       Project: Vprofile
       Owner: Devops Team
@@ -127,7 +127,7 @@
     vpc_subnet_id: "{{priv_subnet_ids[0]}}"
     wait: yes
     wait_timeout: 300
-    state: "{{insatnce_state}}"
+    state: "{{instance_state}}"
     tags:
       Project: Vprofile
       Owner: Devops Team
@@ -146,7 +146,7 @@
     vpc_subnet_id: "{{priv_subnet_ids[0]}}"
     wait: yes
     wait_timeout: 300
-    state: "{{insatnce_state}}"
+    state: "{{instance_state}}"
     tags:
       Project: Vprofile
       Owner: Devops Team
