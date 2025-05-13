@@ -181,6 +181,11 @@
     mode: 0400
     block: 
         " 
+
+
+        ---
+
+        
         web01_ip: {{vprofile_web01_out.instances[0].network_interfaces[0].private_ip_address}}
 
         app01_ip: {{vprofile_app01_out.instances[0].network_interfaces[0].private_ip_address}}

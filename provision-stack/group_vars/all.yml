@@ -1,5 +1,9 @@
 # BEGIN ANSIBLE MANAGED BLOCK
- web01_ip: 172.20.4.250
+
+
+---
+
+web01_ip: 172.20.4.250
 app01_ip: 172.20.4.114
 mc01_ip: 172.20.4.35
 rmq01_ip: 172.20.4.15
