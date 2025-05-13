@@ -2,3 +2,6 @@
 .ansible
 
 *.pem
+
+demo.json
+Readme

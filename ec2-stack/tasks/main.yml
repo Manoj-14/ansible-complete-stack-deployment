@@ -43,6 +43,10 @@
         from_port: 22
         to_port: 22
         group_id: "{{bastion_sg_id}}"
+      - proto: tcp
+        from_port: 22
+        to_port: 22
+        cidr_ip: "{{MYIP}}"
   register: vproStack_sg_out
 
 - name: Security groups for vprofile stack
@@ -172,24 +176,38 @@
 
 - name: Insert/Update hosts IP & Names in file /group_vars/hostip.yml
   blockinfile:
-    path: ec2-stack/provision-stack/group_vars/host-ip
+    create: true
+    path: provision-stack/group_vars/all.yml
     mode: 0400
     block: 
-      web01_ip: "{{vprofile_web01_out.instances[0].network_interfaces[0].private_ip_address}}"
-      app01_ip: "{{vprofile_app01_out.instances[0].network_interfaces[0].private_ip_address}}"
-      mc01_ip: "{{vprofile_mc01_out.instances[0].network_interfaces[0].private_ip_address}}"
-      rmq01_ip: "{{vprofile_rmq01_out.instances[0].network_interfaces[0].private_ip_address}}"
-      db01_ip: "{{vprofile_db01_out.instances[0].network_interfaces[0].private_ip_address}}"
+        web01_ip{{vprofile_web01_out.instances[0].network_interfaces[0].private_ip_address}}
+
+        app01_ip:{{vprofile_app01_out.instances[0].network_interfaces[0].private_ip_address}}
+
+        mc01_ip:{{vprofile_mc01_out.instances[0].network_interfaces[0].private_ip_address}}
+
+        rmq01_ip:{{vprofile_rmq01_out.instances[0].network_interfaces[0].private_ip_address}}
+
+        db01_ip:{{vprofile_db01_out.instances[0].network_interfaces[0].private_ip_address}}
 
 - name: Copy private key to provision folder
   copy: 
     src: vprofile-web-key.pem
-    dest: ec2-stack/provision-stack/vprofile-web-key.pem
+    dest: provision-stack/vprofile-web-key.pem
+    mode: 0400
+
+- name: Copy private key for bastion host
+  copy: 
+    src: aws-bastion-host/files/bastion-key.pem
+    dest: provision-stack/bastion-key.pem
     mode: 0400
 
 - name: Insert or Update Inventory file provision-stack/ inventory
   blockinfile:
-    path: ec2-stack/provision-stack/inventory-vpro
+    create: true
+    append_newline: true
+    prepend_newline: true
+    path: provision-stack/inventory-vpro
     mode: 0400
     block:
       web01 ansible_host={{vprofile_web01_out.instances[0].network_interfaces[0].private_ip_address}} 
@@ -204,23 +222,35 @@
 
       cntl ansible_host=127.0.0.1 ansible_connection=local
 
+      bastion ansible_host={{bastion_public_ip}} ansible_user=ec2-user ansible_ssh_private_key_file=bastion-key.pem
+
       [websrvgroup]
+
       web01
 
       [appsrvgroup]
+
       app01
 
       [mcsrvgroup]
+
       mc01
 
       [rmqsrvgroup]
+
       rmq01
 
       [dbsrvgroup]
+
       db01
 
       [control]
+
       cntl
+
+      [bastionsvrgroup]
+      
+      bastion
 
       [stack_inst:children]
 
@@ -239,3 +269,5 @@
       ansible_user=ubuntu
       
       ansible_ssh_private_key_file=vprofile-web-key.pem
+
+      ansible_ssh_common_args='-o ProxyCommand="ssh -W %h:%p -q ec2-user@bastion"'

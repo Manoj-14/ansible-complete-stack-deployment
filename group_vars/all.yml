@@ -5,3 +5,5 @@ zones:
   zone1: 'us-east-2a'
   zone2: 'us-east-2b'
   zone3: 'us-east-2c'
+
+MYIP: "122.172.82.14/32"
