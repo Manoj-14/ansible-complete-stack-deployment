@@ -6,13 +6,20 @@ rmq01 ansible_host=172.20.4.15
 db01 ansible_host=172.20.4.42
 cntl ansible_host=127.0.0.1 ansible_connection=local
 bastion ansible_host=3.146.65.97 ansible_user=ec2-user ansible_ssh_private_key_file=bastion-key.pem
-[websrvgroup] web01
-[appsrvgroup] app01
-[mcsrvgroup] mc01
-[rmqsrvgroup] rmq01
-[dbsrvgroup] db01
-[control] cntl
-[bastionsvrgroup] bastion
+[websrvgroup]
+web01
+[appsrvgroup]
+app01
+[mcsrvgroup]
+mc01
+[rmqsrvgroup]
+rmq01
+[dbsrvgroup]
+db01
+[control]
+cntl
+[bastionsvrgroup]
+bastion
 [stack_inst:children]
 websrvgroup
 appsrvgroup
