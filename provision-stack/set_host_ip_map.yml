@@ -2,7 +2,7 @@
   hosts: all
   tasks:
     - name: Import VPC setup variable
-      ansible.builtin.include_vars: group_vars/hostip.yml
+      ansible.builtin.include_vars: group_vars/hostIp.yml
     
     - name: Update the hosts files of all  the servers
       ansible.builtin.blockinfile:
