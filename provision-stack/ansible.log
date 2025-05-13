@@ -1,0 +1,30 @@
+2025-05-13 12:52:13,427 p=18426 u=manom n=ansible WARNING| [WARNING]:  * Failed to parse /Users/manom/Desktop/ansible-complete-stack-deployment/provision-stack/inventory-vpro with
+yaml plugin: YAML inventory has invalid structure, it should be a dictionary, got: <class
+'ansible.parsing.yaml.objects.AnsibleUnicode'>
+
+2025-05-13 12:52:13,427 p=18426 u=manom n=ansible WARNING| [WARNING]:  * Failed to parse /Users/manom/Desktop/ansible-complete-stack-deployment/provision-stack/inventory-vpro with ini
+plugin: host range must be begin:end or begin:end:step
+
+2025-05-13 12:52:13,427 p=18426 u=manom n=ansible WARNING| [WARNING]: Unable to parse /Users/manom/Desktop/ansible-complete-stack-deployment/provision-stack/inventory-vpro as an
+inventory source
+
+2025-05-13 12:52:13,428 p=18426 u=manom n=ansible WARNING| [WARNING]: No inventory was parsed, only implicit localhost is available
+
+2025-05-13 12:52:13,687 p=18426 u=manom n=ansible INFO| PLAY [Generate artifact, copy artifact and sql file to files directory] *****************************************************
+2025-05-13 12:52:13,702 p=18426 u=manom n=ansible INFO| TASK [Gathering Facts] ******************************************************************************************************
+2025-05-13 12:52:14,234 p=18426 u=manom n=ansible INFO| fatal: [localhost]: FAILED! => {"ansible_facts": {}, "changed": false, "failed_modules": {"ansible.legacy.setup": {"failed": true, "module_stderr": "sudo: a password is required\n", "module_stdout": "", "msg": "MODULE FAILURE: No start of json char found\nSee stdout/stderr for the exact error", "rc": 1}}, "msg": "The following modules failed to execute: ansible.legacy.setup\n"}
+2025-05-13 12:52:14,235 p=18426 u=manom n=ansible INFO| PLAY RECAP ******************************************************************************************************************
+2025-05-13 12:52:14,235 p=18426 u=manom n=ansible INFO| localhost                  : ok=0    changed=0    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0   
+2025-05-13 12:52:27,449 p=18629 u=manom n=ansible WARNING| [WARNING]:  * Failed to parse /Users/manom/Desktop/ansible-complete-stack-deployment/provision-stack/inventory-vpro with
+yaml plugin: YAML inventory has invalid structure, it should be a dictionary, got: <class
+'ansible.parsing.yaml.objects.AnsibleUnicode'>
+
+2025-05-13 12:52:27,449 p=18629 u=manom n=ansible WARNING| [WARNING]:  * Failed to parse /Users/manom/Desktop/ansible-complete-stack-deployment/provision-stack/inventory-vpro with ini
+plugin: host range must be begin:end or begin:end:step
+
+2025-05-13 12:52:27,449 p=18629 u=manom n=ansible WARNING| [WARNING]: Unable to parse /Users/manom/Desktop/ansible-complete-stack-deployment/provision-stack/inventory-vpro as an
+inventory source
+
+2025-05-13 12:52:27,449 p=18629 u=manom n=ansible WARNING| [WARNING]: No inventory was parsed, only implicit localhost is available
+
+2025-05-13 12:52:27,641 p=18629 u=manom n=ansible INFO| playbook: build.yml
