@@ -13,3 +13,229 @@
     dest: "ec2-stack/files/vprofile-web-key.pem"
     mode: 0600
   when: key_out.changed
+
+- name: Security group for ELB
+  amazon.aws.ec2_group:
+    name: vproELB-sg
+    description: vproELB-sg allow 80 from any where to access website
+    region: "{{region}}"
+    vpc_id: "{{vpc_id}}"
+    rules:
+      - proto: tcp
+        from_port: 80
+        to_port: 80
+        cidr_ip: 0.0.0.0/0
+  register: vproELB_sg_out
+
+- name: Security groups for vprofile stack
+  amazon.aws.ec2_group:
+    name: vproStack-sg
+    description: vproStack-sg allow 80 from ELB and ssh from bastion host
+    region: "{{region}}"
+    vpc_id: "{{vpc_id}}"
+    purge_rules: no
+    rules:
+      - proto: tcp
+        from_port: 80
+        to_port: 80
+        group_id: "{{vproELB_sg_out.group_id}}"
+      - proto: tcp
+        from_port: 22
+        to_port: 22
+        group_id: "{{bastion_sg_id}}"
+  register: vproStack_sg_out
+
+- name: Security groups for vprofile stack
+  amazon.aws.ec2_group:
+    name: vproStack-sg
+    description: vproStack-sg allow 80 from ELB and ssh from bastion host
+    region: "{{region}}"
+    vpc_id: "{{vpc_id}}"
+    purge_rules: no #if it is yes then it revome all rulues present in it before then it add new rule
+    rules:
+      - proto: all
+        group_id: "{{vproStack_sg_out.group_id}}"
+
+- name: Creating Nginx web-01
+  amazon.aws.ec2_instance:
+    name: web-01
+    key_name: vprofile-web-key
+    region: "{{region}}"
+    instance_type: "t2.micro"
+    image_id: "{{ngnix_ami_id}}"
+    vpc_subnet_id: "{{priv_subnet_ids[0]}}"
+    wait: yes
+    wait_timeout: 300
+    state: "{{insatnce_state}}"
+    tags:
+      Project: Vprofile
+      Owner: Devops Team
+    exact_count: 1
+    security_group: "{{vproStack_sg_out.group_id}}"
+  register: vprofile_web01_out
+  when: priv_subnet_ids | length > 0
+
+- name: Creating tomcat app-01
+  amazon.aws.ec2_instance:
+    name: app-01
+    key_name: vprofile-web-key
+    region: "{{region}}"
+    instance_type: "t2.micro"
+    image_id: "{{tomcat_ami_id}}"
+    vpc_subnet_id: "{{priv_subnet_ids[0]}}"
+    wait: yes
+    wait_timeout: 300
+    state: "{{insatnce_state}}"
+    tags:
+      Project: Vprofile
+      Owner: Devops Team
+    exact_count: 1
+    security_group: "{{vproStack_sg_out.group_id}}"
+  register: vprofile_app01_out
+  when: priv_subnet_ids | length > 0
+
+- name: Creating memcache mc-01
+  amazon.aws.ec2_instance:
+    name: mc-01
+    key_name: vprofile-web-key
+    region: "{{region}}"
+    instance_type: "t2.micro"
+    image_id: "{{memcache_ami_id}}"
+    vpc_subnet_id: "{{priv_subnet_ids[0]}}"
+    wait: yes
+    wait_timeout: 300
+    state: "{{insatnce_state}}"
+    tags:
+      Project: Vprofile
+      Owner: Devops Team
+    exact_count: 1
+    security_group: "{{vproStack_sg_out.group_id}}"
+  register: vprofile_mc01_out
+  when: priv_subnet_ids | length > 0
+
+- name: Creating RabbitMQ rmq-01
+  amazon.aws.ec2_instance:
+    name: rmq-01
+    key_name: vprofile-web-key
+    region: "{{region}}"
+    instance_type: "t2.micro"
+    image_id: "{{rmq_ami_id}}"
+    vpc_subnet_id: "{{priv_subnet_ids[0]}}"
+    wait: yes
+    wait_timeout: 300
+    state: "{{insatnce_state}}"
+    tags:
+      Project: Vprofile
+      Owner: Devops Team
+    exact_count: 1
+    security_group: "{{vproStack_sg_out.group_id}}"
+  register: vprofile_rmq01_out
+  when: priv_subnet_ids | length > 0
+
+- name: Creating MySql db-01
+  amazon.aws.ec2_instance:
+    name: db-01
+    key_name: vprofile-web-key
+    region: "{{region}}"
+    instance_type: "t2.micro"
+    image_id: "{{mysql_ami_id}}"
+    vpc_subnet_id: "{{priv_subnet_ids[0]}}"
+    wait: yes
+    wait_timeout: 300
+    state: "{{insatnce_state}}"
+    tags:
+      Project: Vprofile
+      Owner: Devops Team
+    exact_count: 1
+    security_group: "{{vproStack_sg_out.group_id}}"
+  register: vprofile_db01_out
+  when: priv_subnet_ids | length > 0
+
+- debug:
+    var: vprofile_db01_out.instances[0].instance_id
+  
+- name: Create Elastinc load balancer 
+  local_action: 
+    module: ec2_elb_lb
+    name: vprofile-elb
+    region: "{{region}}"
+    state: present
+    instance_ids:
+      - "{{vprofile_web01_out.instances[0].instance_id}}"
+    purge_instance_ids: true #it attachs the instance inly mentioned in above instances list
+    security_group_ids: "{{vproELB_sg_out.group_id}}"
+    subnets: "{{pub_subnet_ids}}"
+    listeners:
+      - protocol: http #options are http, https, ssl, tcp
+        load_balancer_port: 80
+        instance_port: 80
+
+- name: Insert/Update hosts IP & Names in file /group_vars/hostip.yml
+  blockinfile:
+    path: ec2-stack/provision-stack/group_vars/host-ip
+    mode: 0400
+    block: 
+      web01_ip: "{{vprofile_web01_out.instances[0].network_interfaces[0].private_ip_address}}"
+      app01_ip: "{{vprofile_app01_out.instances[0].network_interfaces[0].private_ip_address}}"
+      mc01_ip: "{{vprofile_mc01_out.instances[0].network_interfaces[0].private_ip_address}}"
+      rmq01_ip: "{{vprofile_rmq01_out.instances[0].network_interfaces[0].private_ip_address}}"
+      db01_ip: "{{vprofile_db01_out.instances[0].network_interfaces[0].private_ip_address}}"
+
+- name: Copy private key to provision folder
+  copy: 
+    src: vprofile-web-key.pem
+    dest: ec2-stack/provision-stack/vprofile-web-key.pem
+    mode: 0400
+
+- name: Insert or Update Inventory file provision-stack/ inventory
+  blockinfile:
+    path: ec2-stack/provision-stack/inventory-vpro
+    mode: 0400
+    block:
+      web01 ansible_host={{vprofile_web01_out.instances[0].network_interfaces[0].private_ip_address}} 
+
+      app01 ansible_host={{vprofile_app01_out.instances[0].network_interfaces[0].private_ip_address}}
+
+      mc01 ansible_host={{vprofile_mc01_out.instances[0].network_interfaces[0].private_ip_address}}
+
+      rmq01 ansible_host={{vprofile_rmq01_out.instances[0].network_interfaces[0].private_ip_address}}
+
+      db01 ansible_host={{vprofile_db01_out.instances[0].network_interfaces[0].private_ip_address}}
+
+      cntl ansible_host=127.0.0.1 ansible_connection=local
+
+      [websrvgroup]
+      web01
+
+      [appsrvgroup]
+      app01
+
+      [mcsrvgroup]
+      mc01
+
+      [rmqsrvgroup]
+      rmq01
+
+      [dbsrvgroup]
+      db01
+
+      [control]
+      cntl
+
+      [stack_inst:children]
+
+      websrvgroup
+
+      appsrvgroup
+      
+      mcsrvgroup
+      
+      rmqsrvgroup
+      
+      dbsrvgroup
+
+      [stack_inst:vars]
+      
+      ansible_user=ubuntu
+      
+      ansible_ssh_private_key_file=vprofile-web-key.pem

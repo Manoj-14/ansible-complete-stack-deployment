@@ -90,4 +90,6 @@
     natgw_id: "{{ NATGW_out.nat_gateway_id }}"
     pubrt_id: "{{public_rt_out.route_table.id}}"
     privrt_id: "{{private_rt_out.route_table.id}}"
+    get_pub_sum_from_list: "{{pub_subnet_ids | random}}" #get any public subnet from list
+    get_priv_sum_from_list: "{{priv_subnet_ids | random}}"  #get any private subnet from list
     cacheable: yes 
