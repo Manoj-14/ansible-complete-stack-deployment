@@ -177,7 +177,7 @@
 - name: Insert/Update hosts IP & Names in file /group_vars/hostip.yml
   blockinfile:
     create: true
-    path: provision-stack/group_vars/all.yml
+    path: provision-stack/group_vars/hostIp.yml
     mode: 0400
     block: 
         " 
