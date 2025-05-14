@@ -36,7 +36,7 @@
     vpc_subnet_id: "{{pub_subnet_ids[0]}}"
     wait: yes
     wait_timeout: 300
-    state: "{{instance_state}}"
+    state: "running"
     tags:
       Name: Bastion Host
       Project: Vprofile
