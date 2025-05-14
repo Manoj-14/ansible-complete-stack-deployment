@@ -177,7 +177,7 @@
 
 - name: elb debug
   debug:
-    var: vpro-elb-out
+    var: vpro_elb_out
   
 - name: add instance id's to managed instances list
   set_fact:
