@@ -6,4 +6,6 @@
 demo.json
 Readme
 
-*.log
+.log
+
+hostIp.yml
