@@ -173,7 +173,7 @@
       - protocol: http #options are http, https, ssl, tcp
         load_balancer_port: 80
         instance_port: 80
-  register: vpro-elb-out
+  register: vpro_elb_out
 
 - name: elb debug
   debug:
