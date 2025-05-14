@@ -1,11 +1,11 @@
 # BEGIN ANSIBLE MANAGED BLOCK
-web01 ansible_host=172.20.4.250
-app01 ansible_host=172.20.4.114
-mc01 ansible_host=172.20.4.35
-rmq01 ansible_host=172.20.4.15
-db01 ansible_host=172.20.4.42
+web01 ansible_host=172.20.4.75
+app01 ansible_host=172.20.4.15
+mc01 ansible_host=172.20.4.176
+rmq01 ansible_host=172.20.4.252
+db01 ansible_host=172.20.4.4
 cntl ansible_host=127.0.0.1 ansible_connection=local
-bastion ansible_host=3.137.200.213 ansible_user=ec2-user ansible_ssh_private_key_file=bastion-key.pem
+bastion ansible_host=3.14.144.138 ansible_user=ec2-user ansible_ssh_private_key_file=bastion-key.pem
 [websrvgroup]
 web01
 [appsrvgroup]
@@ -29,5 +29,5 @@ dbsrvgroup
 [stack_inst:vars]
 ansible_user=ubuntu
 ansible_ssh_private_key_file=vprofile-web-key.pem
-ansible_ssh_common_args='-o ProxyCommand="ssh -i bastion-key.pem -W %h:%p ec2-user@bastion"'
+ansible_ssh_common_args='-o ProxyCommand="ssh -i bastion-key.pem -W %h:%p -q ec2-user@3.14.144.138"'
 # END ANSIBLE MANAGED BLOCK
