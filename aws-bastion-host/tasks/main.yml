@@ -48,7 +48,7 @@
 
 - name: Update the bastion host key pair
   amazon.aws.ec2_instance:
-    instance_ids: bastion_instance_out.instances[0].instance_id
+    instance_ids: "{{bastion_instance_out.instances[0].instance_id}}"
     state: "running"
     key_name: vprofile-key
     region: "{{region}}"
