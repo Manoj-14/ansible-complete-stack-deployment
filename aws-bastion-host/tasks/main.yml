@@ -54,11 +54,9 @@
     region: "{{region}}"
   when: key_out.changed
 
-- debug:
-    var: bastion_instance_out
-
 - name: Set required out to fact
   set_fact:
     bastion_sg_id: "{{bastionSG_out.group_id}}"
     bastion_public_ip: "{{bastion_instance_out.instances[0].public_ip_address}}"
-    cacheable: yes 
+    managed_instances: ["{{bastion_instance_out.instances[0].instance_id}}"]
+    cacheable: yes  

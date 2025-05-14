@@ -173,6 +173,22 @@
       - protocol: http #options are http, https, ssl, tcp
         load_balancer_port: 80
         instance_port: 80
+  register: vpro-elb-out
+
+- name: elb debug
+  debug:
+    var: vpro-elb-out
+  
+- name: add instance id's to managed instances list
+  set_fact:
+    managed_instances: "{{managed_instances + [item]}}"
+    cacheable: yes 
+  loop: 
+    - "{{vprofile_web01_out.instances[0].instance_id}}"
+    - "{{vprofile_app01_out.instances[0].instance_id}}"
+    - "{{vprofile_mc01_out.instances[0].instance_id}}"
+    - "{{vprofile_rmq01_out.instances[0].instance_id}}"
+    - "{{vprofile_db01_out.instances[0].instance_id}}"
 
 - name: Insert/Update hosts IP & Names in file /group_vars/hostip.yml
   blockinfile:

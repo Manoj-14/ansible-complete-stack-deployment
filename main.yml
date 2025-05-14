@@ -7,4 +7,15 @@
     - aws-vpc
     - aws-bastion-host  
     - ec2-stack
+  
+  tasks:
+    - name: Running instances
+      ansible.builtin.debug:
+        var: managed_instances
+    
+    - name: Nat Gatway
+      ansible.builtin.debug:
+        var: natgw_id
+
+    
 
