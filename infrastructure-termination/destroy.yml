@@ -7,7 +7,7 @@
     - name: terminate all the running instances
       ansible.builtin.ec2_instance:
         state: absent
-        instance_id: managed_instances
+        instance_ids: managed_instances
         region: "{{region}}"
     
     - name: delete nat gateway and release elastic ip
