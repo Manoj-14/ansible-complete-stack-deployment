@@ -1,0 +1,33 @@
+---
+
+- name: Deploy SQL file on accounts db
+  hosts: dbsrvgroup
+  gather_facts: no
+  vars_files:
+    - group_vars/dbsvrgrp.yml
+  tasks:
+    - name: copy sql file to dbsvr
+      ansible.builtin.copy:
+        src: files/db_backup.sql
+        dest: /tmp/db_backup.sql
+      tags:
+        - deploy
+    
+    - name: Restoring DB
+      ansible.builtin.mysql_db:
+        name: accounts
+        login_user: "{{dbuser}}"
+        login_password: "{{dbpass}}"
+        state: import
+        target: /tmp/db_backup.sql
+      notify:
+        - Restart MySQL
+      tags:
+        - deploy
+
+  handlers:
+    - name: Restart MySQL
+      ansible.builtin.service:
+        name: mysql
+        state: restarted
+      

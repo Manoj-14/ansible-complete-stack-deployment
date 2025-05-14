@@ -9,7 +9,7 @@
   ansible.builtin.import_playbook: db.yml
 
 - name: Deploy MySql file on Dbserver
-  ansible.builtin.import_playbook: db.yml
+  ansible.builtin.import_playbook: dbdeploy.yml
 
 - name: Setup memecache
   ansible.builtin.import_playbook: memcache.yml
