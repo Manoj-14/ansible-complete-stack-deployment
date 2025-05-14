@@ -21,4 +21,16 @@
       ansible.builtin.debug:
         var: vpro_elb_id
     
+    - name: Store these facts in var file (for termination)
+      ansible.builtin.blockinfile:
+        mode: 0400
+        create: true
+        dest: infrastructure-termination/group_vars/service-termination-ids.yml
+        block: |
+          {{ {
+            'natgw_id': natgw_id,
+            'managed_instances': managed_instances,
+            'vpro_elb_id': vpro_elb_id
+          } | to_nice_yaml(indent=2, width=1337) }}
+    
 
