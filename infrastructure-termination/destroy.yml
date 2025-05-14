@@ -9,9 +9,8 @@
     - name: terminate all the running instances
       ansible.builtin.ec2_instance:
         state: absent
-        instance_ids: managed_instances
-        region: "{{region}}"
-    
+        instance_ids: "{{managed_instances}}"
+        region: "{{region}}"    
     - name: delete nat gateway and release elastic ip
       amazon.aws.ec2_vpc_nat_gateway:
         state: absent

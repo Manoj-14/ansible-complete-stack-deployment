@@ -1,11 +1,11 @@
 # BEGIN ANSIBLE MANAGED BLOCK
 managed_instances:
-- i-067c4c7cb21bc5cad
-- i-0cf60a4f67407af1a
-- i-0ec301385a56d735e
-- i-0abbe050d8eafa2e5
-- i-01912a92111d13031
-- i-0bbe6dce64975aadf
-natgw_id: nat-0145b640d0aa24d24
+- i-09420c8896dd01fe8
+- i-0c3cb8d6997c59cd6
+- i-0b2bcb5382ec6972d
+- i-056694b1f42138c28
+- i-048fa954cc432d151
+- i-0db713c11c09d0732
+natgw_id: nat-0895fdeb67236939a
 vpro_elb_id: vprofile-elb
 # END ANSIBLE MANAGED BLOCK
