@@ -17,5 +17,8 @@
       ansible.builtin.debug:
         var: natgw_id
 
+    - name: Elastic load balancer
+      ansible.builtin.debug:
+        var: vpro_elb_id
     
 

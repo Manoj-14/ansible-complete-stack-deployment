@@ -1,0 +1,27 @@
+---
+- name: Destory the billable services
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: terminate all the running instances
+      ansible.builtin.ec2_instance:
+        state: absent
+        instance_id: managed_instances
+        region: "{{region}}"
+    
+    - name: delete nat gateway and release elastic ip
+      amazon.aws.ec2_vpc_nat_gateway:
+        state: absent
+        nat_gateway_id: "{{natgw_id}}"
+        release_eip: true
+        wait: true
+        wait_timeout: 300
+        region: "{{region}}"
+
+    - name: delete elastic load balancer
+      local_action:
+        module: ec2_elb_lb
+        name: "{{vpro_elb_id}}"
+        region: "{{region}}"
+        state: absent

@@ -175,12 +175,10 @@
         instance_port: 80
   register: vpro_elb_out
 
-- name: elb debug
-  debug:
-    var: vpro_elb_out
   
-- name: add instance id's to managed instances list
+- name: add instance id's to managed instances list and elb name to facts
   set_fact:
+    vpro_elb_id: "{{vpro_elb_out.elb.name}}"
     managed_instances: "{{managed_instances + [item]}}"
     cacheable: yes 
   loop: 
