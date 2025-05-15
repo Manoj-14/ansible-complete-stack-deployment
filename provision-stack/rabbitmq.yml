@@ -68,7 +68,7 @@
 
     - name: Add RabbitMQ repository
       apt_repository:
-        repo: "deb https://packagecloud.io/rabbitmq/rabbitmq-server/ubuntu/ $(lsb_release -sc) main"
+        repo: "deb [signed-by=/usr/share/keyrings/rabbitmq-archive-keyring.gpg] https://packagecloud.io/rabbitmq/rabbitmq-server/ubuntu {{ ansible_lsb.codename }} main"
         state: present
         filename: rabbitmq
         update_cache: yes
