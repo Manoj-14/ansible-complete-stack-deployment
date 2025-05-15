@@ -151,12 +151,12 @@
           when: deploy_info.changed
           tags:
             - deploy
-            
+
     - name: Start tomcat8 svc
       ansible.builtin.service:
         name: tomcat
         state: started
-        when: deploy_info.changed
+      when: deploy_info.changed
       tags:
         - deploy
 
