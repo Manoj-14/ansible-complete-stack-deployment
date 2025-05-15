@@ -45,15 +45,33 @@
     #     state: present
     #   tags:
     #     - package
-    - name: Add RabbitMQ GPG Key
+    - name: Install required dependencies
+      apt:
+        name:
+          - curl
+          - gnupg
+          - apt-transport-https
+          - software-properties-common
+        state: present
+        update_cache: yes
+
+    - name: Add Erlang repository
+      apt_repository:
+        repo: "ppa:rabbitmq/rabbitmq-erlang"
+        state: present
+        update_cache: yes
+
+    - name: Add RabbitMQ signing key
       apt_key:
-        url: "https://www.rabbitmq.com/rabbitmq-release-signing-key.asc"
+        url: https://packagecloud.io/rabbitmq/rabbitmq-server/gpgkey
         state: present
 
-    - name: Add RabbitMQ APT Repository`
+    - name: Add RabbitMQ repository
       apt_repository:
-        repo: deb https://dl.bintray.com/rabbitmq/debian {{ ansible_distribution_release }} main
+        repo: "deb https://packagecloud.io/rabbitmq/rabbitmq-server/ubuntu/ $(lsb_release -sc) main"
         state: present
+        filename: rabbitmq
+        update_cache: yes
       
     - name: install rabbit Mq
       ansible.builtin.apt:
