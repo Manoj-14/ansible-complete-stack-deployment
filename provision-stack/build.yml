@@ -17,7 +17,7 @@
     
     - name: clone source code from github
       ansible.builtin.git:
-        repo: 'https://github.com/devopshydclub/vprofile-project.git'
+        repo: 'https://github.com/hkhcoder/vprofile-project.git'
         dest: ./Vprofile-repo
         version: vp-rem
       register: git_status
