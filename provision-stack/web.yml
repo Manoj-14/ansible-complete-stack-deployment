@@ -22,7 +22,7 @@
 
     - name: Disable nginx default website
       ansible.builtin.file:
-        path: /etc/nginx/sites-enabled/defaults
+        path: /etc/nginx/sites-enabled/default
         state: absent
       tags:
         - conf
