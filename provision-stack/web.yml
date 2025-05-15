@@ -36,7 +36,7 @@
     
     - name: Enable vproapp
       ansible.builtin.file:
-        src: /etc/nginx/sites-availablevproapp
+        src: /etc/nginx/sites-available/vproapp
         dest: /etc/nginx/sites-enabled/vproapp
         state: link
       notify:
