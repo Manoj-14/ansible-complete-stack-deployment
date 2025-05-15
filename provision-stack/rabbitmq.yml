@@ -55,23 +55,32 @@
         state: present
         update_cache: yes
 
-    - name: Add Erlang repository
-      apt_repository:
-        repo: "ppa:rabbitmq/rabbitmq-erlang"
-        state: present
+    - name: Download Erlang repo package
+      get_url:
+        url: https://packages.erlang-solutions.com/erlang-solutions_2.0_all.deb
+        dest: /tmp/erlang-solutions.deb
+
+    - name: Install Erlang repo package
+      apt:
+        deb: /tmp/erlang-solutions.deb
+
+    - name: Update apt cache
+      apt:
         update_cache: yes
 
-    - name: Add RabbitMQ signing key
-      apt_key:
-        url: https://packagecloud.io/rabbitmq/rabbitmq-server/gpgkey
+    - name: Install Erlang
+      apt:
+        name: erlang
         state: present
 
-    - name: Add RabbitMQ repository
-      apt_repository:
-        repo: "deb [signed-by=/usr/share/keyrings/rabbitmq-archive-keyring.gpg] https://packagecloud.io/rabbitmq/rabbitmq-server/ubuntu {{ ansible_lsb.codename }} main"
-        state: present
-        filename: rabbitmq
-        update_cache: yes
+    - name: Download RabbitMQ server deb package
+      get_url:
+        url: https://github.com/rabbitmq/rabbitmq-server/releases/download/v3.12.11/rabbitmq-server_3.12.11-1_all.deb
+        dest: /tmp/rabbitmq-server.deb
+
+    - name: Install RabbitMQ server deb
+      apt:
+        deb: /tmp/rabbitmq-server.deb
       
     - name: install rabbit Mq
       ansible.builtin.apt:
