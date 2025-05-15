@@ -97,7 +97,7 @@
     
     - name: Stop the tomcat service
       ansible.builtin.service:
-        name: tomcat8
+        name: tomcat
         state: stopped
       tags:
         - deploy
@@ -146,7 +146,7 @@
       rescue:
         - name: Start tomcat8 svc
           ansible.builtin.service:
-            name: tomcat8
+            name: tomcat
             state: started
           when: deploy_info.changed
           tags:
@@ -171,7 +171,7 @@
   handlers:
     - name: Restart tomcat
       ansible.builtin.service:
-        name: tomcat8
+        name: tomcat
         state: restarted
 
 
