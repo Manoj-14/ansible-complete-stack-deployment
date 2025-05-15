@@ -88,19 +88,19 @@
         state: started
         enabled: yes
     
-    - name: Collect info od existing artifact
+    - name: Collect info of existing artifact
       ansible.builtin.stat:
         path: /usr/local/tomcat8/webapps/ROOT
       register: artifact_stat
       tags:
         - deploy
     
-    - name: Stop the tomcat service
-      ansible.builtin.service:
-        name: tomcat
-        state: stopped
-      tags:
-        - deploy
+    # - name: Stop the tomcat service
+    #   ansible.builtin.service:
+    #     name: tomcat
+    #     state: stopped
+    #   tags:
+    #     - deploy
     
     - name: Try backup and deploy
       block:
@@ -113,7 +113,7 @@
           tags:
             - deploy
     
-        - name: copy ROOT dir with _ROOT name
+        - name: copy ROOT dir with ROOT name
           ansible.builtin.shell: cp -r ROOT old_ROOT
           args:
             chdir: /usr/local/tomcat8/webapps
@@ -129,7 +129,7 @@
           tags:
             - deploy
 
-        - name: Try deplay the artifact else restore from previous old_ROOT
+        - name: Try deploy the artifact else restore from previous old_ROOT
           block:
             - name: Deploy vprofile artifact
               ansible.builtin.copy:
@@ -151,6 +151,7 @@
           when: deploy_info.changed
           tags:
             - deploy
+            
     - name: Wait until ROOT.war is extracted to ROOT dir
       ansible.builtin.wait_for:
         path: /usr/local/tomcat8/webapps/ROOT
