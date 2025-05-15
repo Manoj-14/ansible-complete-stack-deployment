@@ -95,12 +95,12 @@
       tags:
         - deploy
     
-    # - name: Stop the tomcat service
-    #   ansible.builtin.service:
-    #     name: tomcat
-    #     state: stopped
-    #   tags:
-    #     - deploy
+    - name: Stop the tomcat service
+      ansible.builtin.service:
+        name: tomcat
+        state: stopped
+      tags:
+        - deploy
     
     - name: Try backup and deploy
       block:
@@ -152,6 +152,14 @@
           tags:
             - deploy
             
+    - name: Start tomcat8 svc
+      ansible.builtin.service:
+        name: tomcat
+        state: started
+        when: deploy_info.changed
+      tags:
+        - deploy
+
     - name: Wait until ROOT.war is extracted to ROOT dir
       ansible.builtin.wait_for:
         path: /usr/local/tomcat8/webapps/ROOT
