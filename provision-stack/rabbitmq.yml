@@ -1,7 +1,7 @@
 ---
 - name: Install & setup RabbitMQ with user
   hosts: rmqsrvgroup
-  gather_facts: no
+  gather_facts: yes
   tasks:
     # - name: Install erlang repository package
     #  ansible.builtin.apt:
