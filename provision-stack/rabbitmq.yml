@@ -3,11 +3,19 @@
   hosts: rmqsrvgroup
   gather_facts: no
   tasks:
-    - name: Install erlang repository package
+    # - name: Install erlang repository package
+    #  ansible.builtin.apt:
+    #    deb: https://packages.erlang-solutions.com/erlang-solutions_1.0_all.deb
+    #  tags:
+    #    - package
+    - name: Download Erlang Solutions package
+      ansible.builtin.get_url:
+        url: https://packages.erlang-solutions.com/erlang-solutions_1.0_all.deb
+        dest: /tmp/erlang-solutions.deb
+    - name: Install Erlang Solutions package
       ansible.builtin.apt:
-        deb: https://packages.erlang-solutions.com/erlang-solutions_1.0_all.deb
-      tags:
-        - package
+        deb: /tmp/erlang-solutions.deb
+        state: present
 
     - name: Add an erlang solution public key
       ansible.builtin.apt_key:
